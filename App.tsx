@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import JSZip from 'jszip';
 import { 
   Type, 
@@ -9,7 +9,8 @@ import {
   PenTool,
   Zap,
   Info,
-  Download
+  Download,
+  X
 } from 'lucide-react';
 import { ScriptTool } from './types';
 import { runAeScript, openUrl } from './services/aeService';
@@ -64,9 +65,9 @@ const tools: ScriptTool[] = [
 const App: React.FC = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [isZipping, setIsZipping] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
-  // Robust SVG handling using Base64
-  // This prevents issues with special characters in SVG code disrupting the Data URI
+  // Embed the official vector logo
   const logoSvgContent = projectFiles['logo.svg'] || '';
   const logoBase64 = btoa(unescape(encodeURIComponent(logoSvgContent)));
   const logoSrc = `data:image/svg+xml;base64,${logoBase64}`;
@@ -100,41 +101,61 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col p-4 bg-glez-dark selection:bg-glez-lime selection:text-black">
-      {/* Header */}
-      <header className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
-        <div className="flex items-center gap-4">
-            {/* Logo */}
-            <div className="h-12 w-auto max-w-[150px]">
-                <img 
-                    src={logoSrc}
-                    alt="The Glez" 
-                    className="h-full w-auto object-contain object-left"
-                />
+    <div className="min-h-screen flex flex-col p-4 bg-glez-dark selection:bg-glez-lime selection:text-black font-sans relative">
+      
+      {/* Info Modal/Toast */}
+      {showInfo && (
+        <div className="absolute top-20 right-4 z-50 bg-zinc-800 border border-glez-lime shadow-2xl p-4 rounded-lg animate-in fade-in slide-in-from-top-2">
+            <div className="flex justify-between items-start gap-4">
+                <div>
+                    <h4 className="text-glez-lime font-bold text-sm uppercase tracking-wider">Plugin By The Glez</h4>
+                    <p className="text-white text-xs mt-1 font-mono">Version 1.1</p>
+                </div>
+                <button onClick={() => setShowInfo(false)} className="text-zinc-500 hover:text-white">
+                    <X size={14} />
+                </button>
             </div>
         </div>
+      )}
+
+      {/* Header */}
+      <header className="mb-6 relative flex flex-col items-center justify-center border-b border-white/10 pb-6">
         
-        <div className="flex gap-2">
+        {/* Top Right Utilities (Absolute) */}
+        <div className="absolute top-0 right-0 flex gap-2">
             <button 
                 onClick={handleDownload}
-                className="flex items-center gap-2 px-3 py-2 bg-zinc-800 rounded-full hover:bg-glez-lime hover:text-black transition-all text-xs font-bold uppercase tracking-wider text-zinc-300 border border-zinc-700"
-                title="Download Ready-to-Install Plugin"
+                className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 rounded-full hover:bg-glez-lime hover:text-black transition-all text-[10px] font-bold uppercase tracking-wider text-zinc-300 border border-zinc-700"
+                title="Download ZXP"
             >
-                {isZipping ? 'Generating...' : 'Download Plugin (ZXP)'}
-                <Download size={14} />
+                {isZipping ? '...' : 'ZXP'}
+                <Download size={12} />
             </button>
             <button 
-                onClick={() => openUrl('https://theglez.com')}
-                className="p-2 rounded-full hover:bg-white/5 transition-colors text-zinc-500 hover:text-glez-lime"
-                title="About"
+                onClick={() => setShowInfo(!showInfo)}
+                className={`p-1.5 rounded-full transition-colors ${showInfo ? 'bg-glez-lime text-black' : 'bg-zinc-800 text-zinc-400 hover:text-glez-lime'}`}
+                title="Info"
             >
-                <Info size={20} />
+                <Info size={16} />
             </button>
+        </div>
+
+        {/* Centered Logo (Increased Size) */}
+        <div className="h-24 w-full flex justify-center items-center mt-6">
+            <img 
+                src={logoSrc}
+                alt="The Glez" 
+                className="h-full w-auto object-contain drop-shadow-[0_0_10px_rgba(204,255,0,0.2)]"
+            />
+        </div>
+        
+        <div className="mt-2 text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500">
+            Professional Toolkit
         </div>
       </header>
 
-      {/* Grid */}
-      <main className="flex-1 grid grid-cols-2 gap-4 pb-4">
+      {/* Grid - 2 Columns */}
+      <main className="flex-1 grid grid-cols-2 gap-3 pb-4 content-start">
         {tools.map((tool) => (
           <button
             key={tool.id}
@@ -143,30 +164,30 @@ const App: React.FC = () => {
             onMouseLeave={() => setHoveredId(null)}
             className={`
               group relative flex flex-col items-start justify-between 
-              p-4 rounded-xl border border-zinc-700/50 
+              p-3 rounded-xl border border-zinc-700/50 
               bg-glez-card transition-all duration-300 ease-out
-              hover:border-glez-lime hover:shadow-[0_0_20px_rgba(204,255,0,0.15)]
-              hover:-translate-y-1
+              hover:border-glez-lime hover:shadow-[0_0_15px_rgba(204,255,0,0.1)]
+              hover:-translate-y-1 h-32 overflow-hidden
             `}
           >
-            <div className="flex items-start justify-between w-full mb-3">
+            <div className="flex items-start justify-between w-full mb-2">
                 <div className={`
-                    p-3 rounded-lg bg-zinc-800 transition-colors duration-300
+                    p-2 rounded-lg bg-zinc-800 transition-colors duration-300
                     group-hover:bg-glez-lime group-hover:text-black
-                    text-zinc-300
+                    text-zinc-300 border border-white/5
                 `}>
-                    <tool.icon size={24} />
+                    <tool.icon size={20} />
                 </div>
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-glez-lime">
-                    <Zap size={16} fill="currentColor" />
+                    <Zap size={14} fill="currentColor" />
                 </div>
             </div>
 
-            <div className="text-left z-10">
-              <h3 className="text-lg font-bold text-white group-hover:text-glez-lime transition-colors">
+            <div className="text-left z-10 w-full">
+              <h3 className="text-sm font-bold text-white group-hover:text-glez-lime transition-colors truncate">
                 {tool.name}
               </h3>
-              <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
+              <p className="text-[10px] text-zinc-500 mt-1 leading-tight line-clamp-2">
                 {tool.description}
               </p>
             </div>
@@ -178,8 +199,8 @@ const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto pt-4 border-t border-white/5 text-center">
-        <p className="text-[10px] text-zinc-600 uppercase tracking-widest">
+      <footer className="mt-auto pt-3 border-t border-white/5 text-center">
+        <p className="text-[9px] text-zinc-600 uppercase tracking-widest">
             Designed for professional workflows
         </p>
       </footer>
