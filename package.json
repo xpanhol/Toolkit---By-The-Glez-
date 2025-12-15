@@ -1,0 +1,18 @@
+{
+  "name": "toolkit-by-the-glez",
+  "version": "1.0.0",
+  "description": "Plugin After Effects",
+  "scripts": {
+    "build": "esbuild index.tsx --bundle --outfile=dist/bundle.js --loader:.tsx=tsx --platform=browser --minify",
+    "zxp": "npm run build && node zxp.js"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.460.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "adm-zip": "^0.5.10"
+  }
+}
