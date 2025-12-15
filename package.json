@@ -1,6 +1,6 @@
 {
-  "name": "toolkit-by-the-glez",
-  "version": "1.0.0",
+  "name": "the-glez-toolkit",
+  "version": "2.15.12",
   "description": "Plugin After Effects",
   "scripts": {
     "build": "esbuild index.tsx --bundle --outfile=dist/bundle.js --loader:.tsx=tsx --platform=browser --minify",

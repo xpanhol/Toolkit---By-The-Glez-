@@ -330,8 +330,9 @@ const App: React.FC = () => {
   const [isZipping, setIsZipping] = useState(false);
 
   // Logo setup
+  // Using Base64 encoding to prevent display issues with raw SVG data URI
   const logoSvg = projectFiles['logo.svg'];
-  const logoSrc = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(logoSvg || '')}`;
+  const logoSrc = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(logoSvg || '')))}`;
 
   const handleDownload = async () => {
     try {
@@ -394,7 +395,7 @@ const App: React.FC = () => {
         {view === 'home' && (
             <div className="absolute right-0 flex items-center gap-3">
                 <div className="hidden sm:block text-[10px] font-mono uppercase tracking-widest text-zinc-500 text-right leading-tight">
-                    Plugin By<br/>- The Glez V1.1
+                    Plugin By<br/>- The Glez V2.15.12
                 </div>
                 <div className="p-2 rounded-full text-zinc-500">
                     <Info size={20} />

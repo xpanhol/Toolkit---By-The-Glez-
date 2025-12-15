@@ -1,6 +1,14 @@
 export const projectFiles = {
   "mimetype": "application/vnd.adobe.extension",
   
+  "metadata.json": `{
+  "name": "The Glez - Toolkit",
+  "description": "A comprehensive suite of After Effects automation tools including Subtitle Pro, Project Organizer, and more.",
+  "id": "com.theglez.toolkit",
+  "version": "2.15.12",
+  "requestFramePermissions": []
+}`,
+
   "logo.svg": `<?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 9.03 Build 0)  -->
 <svg version="1.1" baseProfile="basic" id="Layer_1"
@@ -145,10 +153,10 @@ export const projectFiles = {
 </svg>`,
 
   "CSXS/manifest.xml": `<?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="9.0" ExtensionBundleId="com.theglez.toolkit" ExtensionBundleVersion="1.0.0"
+<ExtensionManifest Version="9.0" ExtensionBundleId="com.theglez.toolkit" ExtensionBundleVersion="2.15.12" ExtensionBundleName="The Glez - Toolkit"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ExtensionList>
-    <Extension Id="com.theglez.toolkit.panel" Version="1.0.0" />
+    <Extension Id="com.theglez.toolkit.panel" Version="2.15.12" />
   </ExtensionList>
   <ExecutionEnvironment>
     <HostList>
@@ -179,7 +187,7 @@ export const projectFiles = {
         </Lifecycle>
         <UI>
           <Type>Panel</Type>
-          <Menu>ToolKit - By The Glez</Menu>
+          <Menu>The Glez - Toolkit</Menu>
           <Geometry>
             <Size>
               <Height>600</Height>
@@ -201,7 +209,7 @@ export const projectFiles = {
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://cdnjs.cloudflare.com data:;">
-    <title>ToolKit - By The Glez</title>
+    <title>The Glez - Toolkit</title>
     
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -347,7 +355,7 @@ export const projectFiles = {
                 {/* Right: Actions */}
                 <div className="absolute right-0 flex items-center gap-2">
                      <div className="text-[9px] font-mono uppercase tracking-widest text-zinc-500 text-right leading-tight">
-                        Plugin By<br/>- The Glez V1.1
+                        Plugin By<br/>- The Glez V2.15.12
                      </div>
                      <div className="p-1.5 rounded-full text-zinc-500"><InfoIcon size={16} /></div>
                 </div>
