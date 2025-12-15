@@ -371,30 +371,39 @@ const App: React.FC = () => {
     <div className="min-h-screen flex flex-col p-4 bg-glez-dark selection:bg-glez-lime selection:text-black font-sans">
       
       {/* Header */}
-      <header className="mb-6 flex items-center justify-between border-b border-white/10 pb-4 h-14">
-        <div className="flex items-center gap-4">
-            {view !== 'home' ? (
+      <header className="mb-6 relative h-32 flex items-center justify-center border-b border-white/10 shrink-0">
+        
+        {/* Left: Back Button */}
+        <div className="absolute left-0 flex items-center">
+            {view !== 'home' && (
                 <button onClick={goHome} className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
                     <div className="p-2 rounded-full bg-zinc-800 hover:bg-zinc-700"><ArrowLeft size={18} /></div>
                     <span className="font-bold text-lg text-white">{toolDef.find(t => t.view === view)?.name}</span>
                 </button>
-            ) : (
-                <div className="h-10 w-auto max-w-[150px]">
-                    <img src={logoSrc} alt="The Glez" className="h-full w-auto object-contain object-left" />
-                </div>
             )}
         </div>
-        
+
+        {/* Center: Logo (Only on Home) */}
         {view === 'home' && (
-            <div className="flex gap-2">
+            <div className="h-32 w-auto transition-transform duration-300 hover:scale-105">
+                <img src={logoSrc} alt="The Glez" className="h-full w-auto object-contain" />
+            </div>
+        )}
+        
+        {/* Right: Actions (Only on Home) */}
+        {view === 'home' && (
+            <div className="absolute right-0 flex items-center gap-3">
+                <div className="hidden sm:block text-[10px] font-mono uppercase tracking-widest text-zinc-500 text-right leading-tight">
+                    Plugin By<br/>- The Glez V1.1
+                </div>
+                <div className="p-2 rounded-full text-zinc-500">
+                    <Info size={20} />
+                </div>
                 <button 
                     onClick={handleDownload}
                     className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 rounded-full hover:bg-glez-lime hover:text-black transition-all text-[10px] font-bold uppercase tracking-wider text-zinc-300 border border-zinc-700"
                 >
                     {isZipping ? '...' : 'Get ZXP'} <Download size={12} />
-                </button>
-                <button onClick={() => openUrl('https://theglez.com')} className="p-2 rounded-full hover:bg-white/5 text-zinc-500 hover:text-glez-lime">
-                    <Info size={20} />
                 </button>
             </div>
         )}
