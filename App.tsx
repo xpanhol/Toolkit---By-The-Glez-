@@ -65,6 +65,12 @@ const App: React.FC = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [isZipping, setIsZipping] = useState(false);
 
+  // Robust SVG handling using Base64
+  // This prevents issues with special characters in SVG code disrupting the Data URI
+  const logoSvgContent = projectFiles['logo.svg'] || '';
+  const logoBase64 = btoa(unescape(encodeURIComponent(logoSvgContent)));
+  const logoSrc = `data:image/svg+xml;base64,${logoBase64}`;
+
   const handleDownload = async () => {
     try {
         setIsZipping(true);
@@ -96,21 +102,18 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col p-4 bg-glez-dark selection:bg-glez-lime selection:text-black">
       {/* Header */}
-      <header className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
-        <div className="flex items-center gap-3">
-            {/* Logo Placeholder - Simulating the User's Logo */}
-            <div className="w-10 h-10 bg-glez-lime rounded-md flex items-center justify-center shadow-[0_0_10px_rgba(204,255,0,0.3)]">
-                <Zap className="text-black w-6 h-6" fill="currentColor" />
-            </div>
-            <div>
-                <h1 className="text-2xl font-black italic tracking-tighter text-white">
-                    THE <span className="text-glez-lime">GLEZ</span>
-                </h1>
-                <p className="text-xs text-zinc-400 font-mono tracking-widest uppercase">
-                    Plugin Toolkit
-                </p>
+      <header className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
+        <div className="flex items-center gap-4">
+            {/* Logo */}
+            <div className="h-12 w-auto max-w-[150px]">
+                <img 
+                    src={logoSrc}
+                    alt="The Glez" 
+                    className="h-full w-auto object-contain object-left"
+                />
             </div>
         </div>
+        
         <div className="flex gap-2">
             <button 
                 onClick={handleDownload}
